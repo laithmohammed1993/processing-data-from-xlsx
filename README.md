@@ -1,0 +1,1 @@
+<h1 align="center">Welcome to React-Electron-Template</h1>
