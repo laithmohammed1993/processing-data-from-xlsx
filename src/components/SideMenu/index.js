@@ -24,6 +24,22 @@ function SideMenu() {
             </div>
           </div>
         </Link>
+        <Link to='/tables'>
+          <div s={String( state.selectedPage==='/tables' )} className='side-menu-row' onClick={e=>setstate({ 'selectedPage':'/tables' })}>
+            <div>
+              <Icons name='file-contract'/>
+              <p>الجداول</p>
+            </div>
+          </div>
+        </Link>
+        <Link to='/csv-viewer'>
+          <div s={String( state.selectedPage==='/csv-viewer' )} className='side-menu-row' onClick={e=>setstate({ 'selectedPage':'/csv-viewer' })}>
+            <div>
+              <Icons name='file-contract'/>
+              <p>CSV</p>
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   )

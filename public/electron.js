@@ -1,9 +1,9 @@
+const { ipcMain  } = require('electron');
 const electron        = require("electron/main");
 const app             = electron.app;
 const BrowserWindow   = electron.BrowserWindow;
 const path            = require("path");
-const isDev           = require("electron-is-dev");
-
+const isDev           = true//require("electron-is-dev");
 let mainWindow;
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -22,6 +22,7 @@ function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
+  mainWindow.webContents.openDevTools()
   mainWindow.on("closed", () => (mainWindow = null));
 }
 

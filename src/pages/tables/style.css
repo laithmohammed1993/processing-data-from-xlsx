@@ -1,0 +1,63 @@
+.tables-page-container {
+  padding: var(--padding);
+  height: calc( 100vh - var(--padding) - var(--padding) );
+}
+.file-input-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid silver;
+}
+.file-input-container:hover {
+  background-color: var(--light);
+}
+.file-input-container > input {
+  display: none;
+}
+.file-input-container > label {
+  flex: 1;
+  direction: rtl;
+  display: flex;
+  flex-direction: row;
+}
+.file-input-container > label > p {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-family);
+}
+.file-input-container > label > p:first-child {
+  background-color: #efefef;
+  height: 60px;
+  padding: 0 60px;
+}
+.file-input-container > label > p:last-child {
+  padding: 0 30px;
+  direction: ltr;
+}
+.file-input-container > p {
+  margin: 0;
+  width: 200px;
+  height: 60px;
+  background-color: var(--blue);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-family: var(--font-family);
+  transition: all ease-in-out 0.2s;
+  line-height: 22px;
+  cursor: pointer;
+}
+.file-input-container > p:hover {
+  /* font-size: 26px; */
+}
+.file-input-container > p:active {
+  border-width: 5px;
+  transform: scale(0.95);
+}

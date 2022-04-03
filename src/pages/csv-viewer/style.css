@@ -1,0 +1,39 @@
+.html-viewer-page {
+  height: calc(100vh - 160px);
+  overflow: hidden;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px;
+  /* width: 1000px; */
+}
+.html-viewer-page > div {
+  direction: rtl;
+  overflow: auto;
+  width: 100%;
+}
+.html-viewer-page table {
+  border-collapse: collapse;
+}
+.html-viewer-page table td {
+  border: 1px solid black;
+  white-space: nowrap;
+}
+
+.html-viewer-page textarea {
+  width: calc(100% - 48px);
+  border: 0;
+  padding: 24px;
+  min-height: 132px;
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  outline: none;
+  word-spacing: 0px;
+  font-weight: bold;
+  line-height: 44px;
+}
+.html-viewer-page textarea.footer {
+  font-size: 18px;
+  line-height: 36px;
+}

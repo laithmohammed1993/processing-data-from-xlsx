@@ -1,3 +1,7 @@
+@font-face {
+  font-family: cairo;
+  src: url(Cairo-Regular.ttf);
+}
 body {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -20,7 +24,10 @@ body {
   --danger: #dc3545;
   --light: #f8f9fa;
   --dark: #343a40;
+  --padding : 32px;
+  --font-family:cairo;
 }
+
 .main-container {
   display: flex;
   flex-direction: row;
