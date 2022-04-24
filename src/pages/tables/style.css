@@ -1,6 +1,8 @@
 .tables-page-container {
   padding: var(--padding);
   height: calc( 100vh - var(--padding) - var(--padding) );
+  display: flex;
+  flex-direction: column;
 }
 .file-input-container {
   display: flex;

@@ -1,59 +1,63 @@
 import React from 'react'
 import './style.css';
-import * as XLSX from 'xlsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import FileRow from '../../components/FileRow';
 const fs = window.require('fs');
-const parser = require('csv-parser')
-
+//
+const initialState = { fileUrl:'لا يوجد ملف',html:'' , files:[] };
 function TablesPage() {
-  let inputRef      = React.useRef();
-  let globalState   = useSelector(state=>state);
-  let dispatch      = useDispatch();
-  let [ state,setstate ] = React.useReducer((s,d)=>({ ...s,...d }),{ fileUrl:'لا يوجد ملف',html:'' })
-  function processFile() {
-    let file = inputRef.current.files[0];
-    if( file ){
-      let reader = new FileReader();
-      reader.readAsBinaryString(file)
-      reader.onload = function() {
-        let wb = XLSX.read(reader.result,{type:'binary'});
-        /* Get first worksheet */
-        let wsname = wb.SheetNames[0];
-        let ws = wb.Sheets[wsname];
-        /* Convert array of arrays */
-        // const data = XLSX.utils.sheet_to_csv(ws, {header:1});
-        /* Update state */
-        console.log(wb);
-        var workbook = XLSX.read(reader.result,{type:'binary'});
-        var sheet_name_list = workbook.SheetNames;
-        console.log(XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[1]]))
-      };
-    }
-  }
-  function getFileContent(){
-    let filePath = inputRef.current.files[0].path;
-    let html = fs.readFileSync(filePath,'utf-8');
-    dispatch({ type:'addNewFile',data:{ 'path':filePath , html , 'addedDate':Date.now() } })
+  let inputRef                = React.useRef();
+  let { tableScreenState={} } = window.processerData || {};
+  let [ state,setState ]      = React.useReducer((s,d)=>({ ...s,...d }),{...initialState,...tableScreenState});
+  function setstate(object) {
+    window.processerData.tableScreenState = { ...state , ...object };
+    setState({ ...state , ...object })
   }
   function parseCSV(){
-    let filePath = inputRef.current.files[0].path;
-    let csv = fs.readFileSync(filePath,'utf16le');
-    dispatch({ type:'addNewFile',data:{ 'path':filePath , csv , 'addedDate':Date.now() } })
+    setstate({ emptyInputFile:false });
+    if( inputRef.current.files.length === 1 ){
+      let { 'path':filePath , name } = inputRef.current.files[0];
+      let csv = fs.readFileSync(filePath,'utf16le');
+      let fileIndex = state.files.findIndex(file=>file.path===filePath);
+      if( String(name).includes('.csv') ){
+        if( fileIndex === -1 ){
+          setstate({ files:[ ...state.files , { 'path':filePath , csv , name , 'addedDate':Date.now() } ],fileUrl:initialState.fileUrl,emptyInputFile:'' })
+          inputRef.current.value = '';
+        } else {
+          setstate({ emptyInputFile:`تم اضافة الملف مسبقا، تأكد من ملف رقم ${fileIndex+1}` });
+        }
+      } else {
+        setstate({ emptyInputFile:'صيغة الملف غير مدعومة' });
+      }
+    } else {
+      setstate({ emptyInputFile:true })
+    }
   }
   return (
     <div className='tables-page-container'>
         <div className="file-input-container">
-          <p onClick={parseCSV}>معالجة الملف</p>
-          <label htmlFor='xlsxFileInput'><p>أختر الملف : </p><p>{state.fileUrl}</p></label>
+          <p onClick={parseCSV}>تحميل الملف</p>
+          <label htmlFor='xlsxFileInput'><p>أختر الملف : </p><p style={{ color:state.fileUrl===initialState.fileUrl?'silver':'black' }}>{state.fileUrl}</p></label>
           <input type="file" id='xlsxFileInput' onChange={e=>setstate({fileUrl:e.target.files[0].path})} ref={inputRef} required />
         </div>
-        {Object.values(globalState.files).map((file,i)=>{
-          return <div key={i} >
-            <Link to={`/csv-viewer?index=${i}`}>{file.path}</Link>
+        {state.emptyInputFile
+          ? <div style={{ width:'100%',borderRadius:8,backgroundColor:'rgb(255, 135, 135)',border:'1px solid red',display:'flex',justifyContent:'center',alignItems:'center',margin:'16px 0' }} >
+              <p style={{ fontFamily:'var(--font-family)',color:'#520000', }} >{typeof state.emptyInputFile==='string'?state.emptyInputFile:'اختر ملف اولا'}</p>
+            </div>
+          :<></>}
+        <br/>
+        <br/>
+        <hr style={{ width:'100%' }} />
+        <br/>
+        <br/>
+        {state.files.length > 0
+        ? <div style={{ flex:1,overflow:'auto',direction:'rtl' }}>
+            {state.files.map((file,i)=>{
+              return <FileRow key={i} file={file} index={i} onRemove={index=>setstate({ 'files':state.files.filter((file,x)=>x!==index) })}/>
+            })}
           </div>
-        })}
-        {/* <div dangerouslySetInnerHTML={{__html:state.html}}></div> */}
+        : <div style={{ display:'flex',justifyContent:'center',alignItems:'center',flex:1 }}>
+            <p style={{ color:'silver',fontFamily:'var(--font-family)' }} >لم يتم تحميل اي ملف</p>
+          </div>}
     </div>
   )
 }

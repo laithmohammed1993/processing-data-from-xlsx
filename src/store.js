@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 
 const initialState = {
-  files : {},
+  files : [],
   value : {
     pageHeader : `هيئة مشاريع بغداد
 قسم ادارة التشييد                                                                     استمارة صرف أجور العمال (الأجر يومي)
@@ -18,10 +18,7 @@ const reducer = (state=initialState,action)=>{
   switch (type) {
     case 'addNewFile':
       let addNewFile = ()=>{
-        let entries = Object.entries(newState.files);
-        entries.push([String(entries.length),data]);
-        console.log(entries)
-        newState.files = Object.fromEntries(entries);
+        newState.files.push(data);
         return newState;
       }
       return addNewFile();
@@ -33,6 +30,13 @@ const reducer = (state=initialState,action)=>{
         return newState;
       }
       return setValue();
+    case 'removeFile':
+      let removeFile = ()=>{
+        let { index } = data;
+        newState.files = newState.files.filter((file,i)=>i!==index);;
+        return newState;
+      }
+      return removeFile();
     default:
       return newState;
   }

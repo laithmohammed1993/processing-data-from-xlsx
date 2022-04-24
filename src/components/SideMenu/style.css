@@ -15,6 +15,9 @@
 .side-menu-component > div {
   padding: 32px 8px;
   width: calc(100% - 16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .side-menu-component > div a {
   text-decoration: none;

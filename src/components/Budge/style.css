@@ -1,0 +1,17 @@
+.budge-component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+.budge-component:active {
+  transform: scale(0.95);
+}
+.budge-component > svg {
+  width: 25px;
+  height: 25px;
+}

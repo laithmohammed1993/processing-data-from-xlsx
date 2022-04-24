@@ -1,23 +1,25 @@
-import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TabStopPosition, TabStopType, TextRun , PageOrientation , Table , TableRow , TableCell , VerticalAlign } from "docx";
+import { AlignmentType, Document, HeadingLevel, Paragraph, TextRun , PageOrientation , Table , TableRow , TableCell , VerticalAlign } from "docx";
+
+export const headTitles = [ "ت" , "عدد الأيام" , "الأجر اليومي" , "المبلغ" , "اسم العامل" , "المهنة" , "التوقيع" ];
 
 const DocxCreator = (params={},options)=>{
-  let { header , total , footer } = params;
+  let { sections } = params;
   let docx = new Document({
-    sections: [
-      {
+    sections: sections.map(({ header , total , footer , data , days })=>{
+      return {
         properties :{
           page:{ size :{ orientation:PageOrientation.LANDSCAPE } , pageNumbers:1 , margin : { right:'1cm',top:'1cm',left:'1cm',bottom:'1cm' } },
         },
         children: [
           ...header.split('\n').map((text)=>createParagraph({ text })),
           createParagraph({ text:' ' }),
-          createTable(),
-          createParagraph({ text:' ' }),
+          createTable({data , days}),
           ...total.split('\n').map((text)=>createParagraph({ text })),
+          createParagraph({ text:' ' }),
           ...footer.split('\n').map((text)=>createParagraph({ text , size:'11pt' , line:350 })),
         ]
-      },
-    ]
+      }
+    })
   })
   return docx;
 }
@@ -61,17 +63,23 @@ const createTableHead = (params={})=>{
     }),
   ];
 }
-
+const _data = [
+  {
+    values : [ "1" , "19" , "20000" , "380000" , "وسام علي حسين" , "عامل مخزن" , "  " ],
+    timeSheet : Array.from(new Array(29)).map(()=>Math.floor(Math.random()*2)===1?'√':'x'),
+  }
+]
 const createTable = (params={})=>{
-  let { days=29 } = params;
-  let halfDays = Math.floor(days/2) + ( days % 2 === 1?1:0 );
+  let { days=29 , data=_data } = params;
   return new Table({
     visuallyRightToLeft:true,
     rows: [
-        ...createTableHead({ days:29 , values:[ "ت" , "عدد الأيام" , "الأجر اليومي" , "المبلغ" , "اسم العامل" , "المهنة" , "التوقيع" ] , timeSheet:Array.from(new Array(29)).map((e,i)=>String(i+1)) }),
-        ...createTableHead({ days:29 , values:[ "1" , "19" , "20000" , "380000" , "وسام علي حسين" , "عامل مخزن" , "  " ] , timeSheet:Array.from(new Array(29)).map(()=>Math.floor(Math.random()*2)===1?'√':'x') })
+      ...createTableHead({ days , values:headTitles , timeSheet:Array.from(new Array(days)).map((e,i)=>String(i+1)) }),
+      ...[].concat(...data.map(({values,timeSheet})=>{
+        return createTableHead({ days:days , values , timeSheet })
+      }))
     ],
-});
+  });
 }
 
 const createCell = (params={ })=>{

@@ -1,45 +1,41 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link , useLocation } from 'react-router-dom';
 import Icons from '../Icons';
 import './style.css';
 
 function SideMenu() {
-  let [ state,setstate ] = React.useReducer((s,d)=>({ ...s,...d }),{ 'selectedPage':'/' });
+  let route = useLocation();
   return (
     <div className='side-menu-component'>
       <div>
-        <Link to='/resources'>
-          <div s={String( state.selectedPage==='/resources' )} className='side-menu-row' onClick={e=>setstate({ 'selectedPage':'/resources' })}>
-            <div>
-              <Icons name='dungeon'/>
-              <p>الموارد</p>
+        <div>
+          <Link to='/'>
+            <div s={String( route.pathname==='/' )} className='side-menu-row'>
+              <div>
+                <Icons name='file-contract'/>
+                <p>الملفات</p>
+              </div>
             </div>
-          </div>
-        </Link>
-        <Link to='/'>
-          <div s={String( state.selectedPage==='/' )} className='side-menu-row' onClick={e=>setstate({ 'selectedPage':'/' })}>
-            <div>
-              <Icons name='file-contract'/>
-              <p>البيانات</p>
+          </Link>
+          <Link to='/csv-viewer'>
+            <div s={String( route.pathname==='/csv-viewer' )} className='side-menu-row'>
+              <div>
+                <Icons name='file-csv'/>
+                <p>القالب</p>
+              </div>
             </div>
-          </div>
-        </Link>
-        <Link to='/tables'>
-          <div s={String( state.selectedPage==='/tables' )} className='side-menu-row' onClick={e=>setstate({ 'selectedPage':'/tables' })}>
-            <div>
-              <Icons name='file-contract'/>
-              <p>الجداول</p>
+          </Link>
+        </div>
+        <div>
+          <Link to='/about'>
+            <div s={String( route.pathname==='/about' )} className='side-menu-row'>
+              <div>
+                <Icons name='code'/>
+                <p>حول</p>
+              </div>
             </div>
-          </div>
-        </Link>
-        <Link to='/csv-viewer'>
-          <div s={String( state.selectedPage==='/csv-viewer' )} className='side-menu-row' onClick={e=>setstate({ 'selectedPage':'/csv-viewer' })}>
-            <div>
-              <Icons name='file-contract'/>
-              <p>CSV</p>
-            </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
       </div>
     </div>
   )

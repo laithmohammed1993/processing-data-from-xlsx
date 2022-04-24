@@ -1,0 +1,22 @@
+.button-component {
+  border: 1px solid var(--blue);
+}
+.button-component > p {
+  margin: 0;
+  width: 200px;
+  height: 60px;
+  background-color: var(--blue);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-family: var(--font-family);
+  transition: all ease-in-out 0.2s;
+  line-height: 22px;
+  cursor: pointer;
+}
+.button-component > p:active {
+  border-width: 5px;
+  transform: scale(0.95);
+}

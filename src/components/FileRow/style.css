@@ -1,0 +1,55 @@
+/***************************/
+/*          FileRow        */
+/***************************/
+.file-row-component {
+  display: flex;
+  flex-direction: row;
+  direction: rtl;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: white;
+  border-radius: 8px;
+  margin: 0 0 8px 0;
+  padding: 16px;
+  box-shadow: rgb(228 228 228) 0px 0px 12px 0px;
+}
+.file-row-component > p {
+  background-color: silver;
+  color: white;
+  font-family: monospace;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bolder;
+  color: black;
+}
+.file-row-component > .file-row-component-name {
+  margin: 0 0 0 auto;
+  padding: 0 16px;
+}
+.file-row-component > .file-row-component-name > p {
+  margin: 0;
+}
+.file-row-component > .file-row-component-name > p:first-child {
+  font-size: 24px;
+  font-weight: bolder; 
+  line-height: 24px;
+  direction:ltr;
+  text-align: right;
+}
+.file-row-component > .file-row-component-name > p:last-child {
+  font-size: 12px;
+  color: silver;
+}
+.file-row-component > .file-row-component-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
