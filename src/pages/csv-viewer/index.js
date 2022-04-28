@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import Budge from '../../components/Budge';
 import TextArea from '../../components/TextArea';
 import FileRow from '../../components/FileRow';
-const processer = require('../../middleware/processer.js');
+import processer from '../../middleware/processer.js'
 
 
 const words = {
@@ -56,7 +56,8 @@ class CSVViewerPage extends React.Component {
     });
   }
   getData(callback=()=>{}){
-    let file = new URLSearchParams(window?.location?.search).get('file') || JSON.stringify(window.processerData.csvFile||{});
+    console.log(this.props.file)
+    let file = typeof this.props.file === 'object'?JSON.stringify(this.props.file):JSON.stringify(window.processerData.csvFile||{});
     file = isJSON(file)?JSON.parse(file):{};
     let { csv } = file;
     if( csv !== undefined && String(csv).length > 30 ){  

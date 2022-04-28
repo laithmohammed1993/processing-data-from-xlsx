@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import Budge from '../Budge';
 import './style.css';
 
@@ -30,9 +29,7 @@ function FileRow(props) {
       ? <div className='file-row-component-buttons'>
           <Budge icon='times' color='white' backgroundColor='var(--pink)' onClick={e=>onRemove(index)} />
           <div style={{ width:16 }}></div>
-          <Link to={`/csv-viewer?file=${JSON.stringify(file)}`}>
-            <Budge icon='print' color='white' backgroundColor='var(--info)' />
-          </Link>
+          <Budge icon='print' color='white' backgroundColor='var(--info)' onClick={e=>window.appRouting({ pathname:'/csv-viewer',file })} />
         </div>
       : <></>}
     </div>

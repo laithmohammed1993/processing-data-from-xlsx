@@ -1,40 +1,33 @@
 import React from 'react'
-import { Link , useLocation } from 'react-router-dom';
 import Icons from '../Icons';
 import './style.css';
 
-function SideMenu() {
-  let route = useLocation();
+function SideMenu(props) {
+  let { pathname , routing=()=>{} } = props;
   return (
     <div className='side-menu-component'>
       <div>
         <div>
-          <Link to='/'>
-            <div s={String( route.pathname==='/' )} className='side-menu-row'>
-              <div>
-                <Icons name='file-contract'/>
-                <p>الملفات</p>
-              </div>
+          <div s={String( pathname==='/' )} onClick={e=>routing({ pathname:'/' })} className='side-menu-row' >
+            <div>
+              <Icons name='file-contract'/>
+              <p>الملفات</p>
             </div>
-          </Link>
-          <Link to='/csv-viewer'>
-            <div s={String( route.pathname==='/csv-viewer' )} className='side-menu-row'>
-              <div>
-                <Icons name='file-csv'/>
-                <p>القالب</p>
-              </div>
+          </div>
+          <div s={String( pathname==='/csv-viewer' )} onClick={e=>routing({ pathname:'/csv-viewer' })} className='side-menu-row'>
+            <div>
+              <Icons name='file-csv'/>
+              <p>القالب</p>
             </div>
-          </Link>
+          </div>
         </div>
         <div>
-          <Link to='/about'>
-            <div s={String( route.pathname==='/about' )} className='side-menu-row'>
-              <div>
-                <Icons name='code'/>
-                <p>حول</p>
-              </div>
+          <div s={String( pathname==='/about' )} onClick={e=>routing({ pathname:'/about' })} className='side-menu-row'>
+            <div>
+              <Icons name='code'/>
+              <p>حول</p>
             </div>
-          </Link>
+          </div>
         </div>
       </div>
     </div>

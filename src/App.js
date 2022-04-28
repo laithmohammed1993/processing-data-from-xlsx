@@ -1,28 +1,37 @@
 import React from 'react'
 import "./App.css";
-import { BrowserRouter as Router, Routes , Route } from "react-router-dom";
 import SideMenu from "./components/SideMenu";
 import TablesPage from './pages/tables';
 import CSVViewerPage from './pages/csv-viewer';
 import AboutScreen from './pages/about';
 
 function App() {
+  let [ state, setstate ] = React.useReducer((s,d)=>({ ...s,...d }),{ pathname:'/', })
   React.useEffect(()=>{
     window.processerData = {};
-  },[])
+    window.appRouting = (object)=>setstate(object);
+  },[]);
+  let page = <></>;
+  switch (state.pathname) {
+    case '/':
+      page = <TablesPage />;
+      break;
+    case '/csv-viewer':
+      page = <CSVViewerPage file={state.file} />;
+      break;
+    case '/about':
+      page = <AboutScreen />;
+      break;
+    default:
+      break;
+  }
   return (
-    <Router>
-      <div className="main-container">
-        <div >
-          <Routes>
-            <Route path="/" index element={<TablesPage />} />
-            <Route path="/csv-viewer" element={<CSVViewerPage />} />
-            <Route path="/about" element={<AboutScreen />} />
-          </Routes>
-        </div>
-        <SideMenu />
+    <div className="main-container">
+      <div >
+        {page}
       </div>
-    </Router>
+      <SideMenu routing={({pathname})=>setstate({ pathname })} pathname={state.pathname}/>
+    </div>
   );
 }
 export default App;

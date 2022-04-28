@@ -1,7 +1,6 @@
 import React from 'react'
 import './style.css';
 import FileRow from '../../components/FileRow';
-const fs = window.require('fs');
 //
 const initialState = { fileUrl:'لا يوجد ملف',html:'' , files:[] };
 function TablesPage() {
@@ -16,16 +15,24 @@ function TablesPage() {
     setstate({ emptyInputFile:false });
     if( inputRef.current.files.length === 1 ){
       let { 'path':filePath , name } = inputRef.current.files[0];
-      let csv = fs.readFileSync(filePath,'utf16le');
-      let fileIndex = state.files.findIndex(file=>file.path===filePath);
-      if( String(name).includes('.csv') ){
-        if( fileIndex === -1 ){
-          setstate({ files:[ ...state.files , { 'path':filePath , csv , name , 'addedDate':Date.now() } ],fileUrl:initialState.fileUrl,emptyInputFile:'' })
-          inputRef.current.value = '';
+      //
+      let reader = new FileReader();
+      reader.readAsText(inputRef.current.files[0],'utf16le');
+      reader.onload = function (evt) {
+        let csv = evt.target.result;
+        let fileIndex = state.files.findIndex(file=>file.path===filePath);
+        if( String(name).includes('.csv') ){
+          if( fileIndex === -1 ){
+            setstate({ files:[ ...state.files , { 'path':filePath , csv , name , 'addedDate':Date.now() } ],fileUrl:initialState.fileUrl,emptyInputFile:'' })
+            inputRef.current.value = '';
+          } else {
+            setstate({ emptyInputFile:`تم اضافة الملف مسبقا، تأكد من ملف رقم ${fileIndex+1}` });
+          }
         } else {
-          setstate({ emptyInputFile:`تم اضافة الملف مسبقا، تأكد من ملف رقم ${fileIndex+1}` });
+          setstate({ emptyInputFile:'صيغة الملف غير مدعومة' });
         }
-      } else {
+      }
+      reader.onerror = ()=>{
         setstate({ emptyInputFile:'صيغة الملف غير مدعومة' });
       }
     } else {

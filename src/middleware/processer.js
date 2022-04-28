@@ -67,6 +67,4 @@ function processer(params={},options={}) {
     return sections;
   }
 }
-// console.log(processer())
-
-module.exports = processer;
+export default processer

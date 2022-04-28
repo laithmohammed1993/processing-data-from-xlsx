@@ -3,7 +3,12 @@ const app             = electron.app;
 const BrowserWindow   = electron.BrowserWindow;
 const path            = require("path");
 const isDev           = false //require("electron-is-dev");
-
+const url             = require('url');
+const indexPath       = url.format({
+  protocol  : 'file',
+  slashes   : true,
+  pathname  : path.join(__dirname, '../build/index.html')
+})
 let mainWindow;
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -17,12 +22,11 @@ function createWindow() {
     },
   });
   mainWindow.removeMenu()
-  mainWindow.loadURL(
-    isDev
-      ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
-  );
-  // mainWindow.webContents.openDevTools()
+  // mainWindow.loadURL(indexPath)
+  // mainWindow.loadURL('index.html')
+  mainWindow.loadURL("http://localhost:3000")
+  mainWindow.webContents.openDevTools()
+  //
   mainWindow.on("closed", () => (mainWindow = null));
   // mainWindow.setIcon('')
   mainWindow.setTitle('Data Formater')
